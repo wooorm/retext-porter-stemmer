@@ -1,6 +1,6 @@
 # retext-porter-stemmer [![Build Status](https://travis-ci.org/wooorm/retext-porter-stemmer.png)](https://travis-ci.org/wooorm/retext-porter-stemmer)
 
-**[retext](https://github.com/wooorm/retext "Retext")** implementation of [the Porter stemming algorithm](http://tartarus.org/martin/PorterStemmer/).
+**[retext](https://github.com/wooorm/retext "Retext")** implementation of the [Porter stemming algorithm](http://tartarus.org/martin/PorterStemmer/).
 
 ## Installation
 
