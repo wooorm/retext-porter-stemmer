@@ -4,17 +4,8 @@
 
 ## Installation
 
-### With NPM
-
 ```sh
 $ npm install retext-porter-stemmer
-```
-
-### Git
-
-```sh
-git clone https://github.com/wooorm/retext-porter-stemmer.git
-cd retext-porter-stemmer
 ```
 
 ## Usage
