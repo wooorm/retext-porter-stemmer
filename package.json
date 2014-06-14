@@ -9,6 +9,9 @@
   ],
   "author": "Titus Wormer <tituswormer@gmail.com>",
   "license": "MIT",
+  "dependencies": {
+    "stemmer": "~0.0.1"
+  },
   "devDependencies": {
     "complexity-report": "~1.0.3",
     "istanbul": "~0.2.11",
