@@ -1,27 +1,24 @@
+'use strict';
 
-var porterStemmer = require('..'),
-    Retext = require('retext'),
-    visit = require('retext-visit'),
-    assert = require('assert'),
-    fs = require('fs'),
-    inputs, outputs;
+var porterStemmer, Retext, visit, assert, tree, otherWords, otherStems;
 
-inputs = fs.readFileSync('./spec/input.txt', 'utf-8').split('\n');
-outputs = fs.readFileSync('./spec/output.txt', 'utf-8').split('\n');
+porterStemmer = require('..');
+Retext = require('retext');
+visit = require('retext-visit');
+assert = require('assert');
 
-// The the last input item is an empty string, when autostemming an empty
-// string the `stem` attribute on `WordNode.data` is reset to `null`.
-outputs[outputs.length - 1] = null;
+tree = new Retext()
+    .use(visit)
+    .use(porterStemmer)
+    .parse('A simple, english, sentence');
+
+otherWords = ['An', 'easy', 'normal', 'paragraph'];
+otherStems = ['An', 'easi', 'normal', 'paragraph'];
 
 describe('porterStemmer()', function () {
     it('should be of type `function`', function () {
         assert(typeof porterStemmer === 'function');
     });
-
-    var tree = new Retext()
-        .use(visit)
-        .use(porterStemmer)
-        .parse('A simple, english, sentence');
 
     it('should stem each `WordNode`', function () {
         tree.visitType(tree.WORD_NODE, function (wordNode) {
@@ -29,26 +26,20 @@ describe('porterStemmer()', function () {
         });
     });
 
-    it('should automatically re-stem `WordNode`s when their values change',
-        function () {
-            var iterator = 1234;
+    it('should set each stem to `null` when a WordNode (no longer?) has ' +
+        'a value', function () {
             tree.visitType(tree.WORD_NODE, function (wordNode) {
-                wordNode.fromString(inputs[++iterator]);
-                assert(wordNode.data.stem === outputs[iterator]);
+                wordNode.fromString();
+                assert(wordNode.data.stem === null);
             });
     });
-});
 
-describe('stemming', function () {
-    var tree = new Retext().use(porterStemmer).parse('Test'),
-        wordNode = tree.head.head.head;
-
-    inputs.forEach(function (input, index) {
-        wordNode.fromString(input);
-        var output = outputs[index],
-            stem = wordNode.data.stem;
-        it('should stem `' + input + '` to `' + output + '`', function () {
-            assert(stem === output);
-        });
+    it('should automatically re-stem `WordNode`s when their values change',
+        function () {
+            var iterator = -1;
+            tree.visitType(tree.WORD_NODE, function (wordNode) {
+                wordNode.fromString(otherWords[++iterator]);
+                assert(wordNode.data.stem === otherStems[iterator]);
+            });
     });
 });
