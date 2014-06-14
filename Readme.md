@@ -18,12 +18,12 @@ $ npm install retext-porter-stemmer
 
 ```js
 var Retext = require('retext'),
-    visit = require('retext-visit');
-    porterStemmer = require('retext-porter-stemmer');
+    visit = require('retext-visit'),
+    stemmer = require('retext-porter-stemmer');
 
 var root = new Retext()
     .use(visit)
-    .use(porterStemmer)
+    .use(stemmer)
     .parse('A simple english sentence.');
 
 root.visitType(root.WORD_NODE, function (node) {
