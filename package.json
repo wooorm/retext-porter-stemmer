@@ -1,6 +1,6 @@
 {
   "name": "retext-porter-stemmer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Retext implementation of the Porter Stemmer",
   "keywords": [
     "porter",
