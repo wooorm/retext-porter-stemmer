@@ -9,7 +9,7 @@
     "retext"
   ],
   "dependencies": {
-    "wooorm/stemmer": "~0.0.2"
+    "wooorm/stemmer": "~0.0.3"
   },
   "scripts" : [
     "index.js"

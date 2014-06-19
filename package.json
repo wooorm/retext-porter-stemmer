@@ -10,16 +10,16 @@
   "author": "Titus Wormer <tituswormer@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "stemmer": "~0.0.2"
+    "stemmer": "~0.0.3"
   },
   "devDependencies": {
     "complexity-report": "~1.0.3",
     "istanbul": "~0.2.11",
-    "jscs": "^1.5.1",
+    "jscs": "^1.5.3",
     "eslint": "^0.6.2",
     "mocha": "~1.20.1",
-    "retext-visit": "~0.0.4",
-    "retext": "~0.0.11"
+    "retext-visit": "~0.0.5",
+    "retext": "~0.0.12"
   },
   "repository": {
     "type": "git",
