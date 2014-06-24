@@ -15,6 +15,8 @@ function attach(retext) {
 
 exports.attach = attach;
 
+exports.porterStemmer = stemmer;
+
 },{"stemmer":11}],2:[function(require,module,exports){
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
 //
@@ -3405,16 +3407,16 @@ module.exports = stemmer;
 },{}],12:[function(require,module,exports){
 'use strict';
 
-var porterStemmer, Retext, visit, assert, tree, otherWords, otherStems;
+var stemmer, Retext, visit, assert, tree, otherWords, otherStems;
 
-porterStemmer = require('..');
+stemmer = require('..');
 Retext = require('retext');
 visit = require('retext-visit');
 assert = require('assert');
 
 tree = new Retext()
     .use(visit)
-    .use(porterStemmer)
+    .use(stemmer)
     .parse('A simple, english, sentence');
 
 otherWords = ['An', 'easy', 'normal', 'paragraph'];
@@ -3422,8 +3424,18 @@ otherStems = ['An', 'easi', 'normal', 'paragraph'];
 
 describe('porterStemmer()', function () {
     it('should be of type `function`', function () {
-        assert(typeof porterStemmer === 'function');
+        assert(typeof stemmer === 'function');
     });
+
+    it('should export an attach method of type `function`', function () {
+        assert(typeof stemmer.attach === 'function');
+    });
+
+    it('should export a porterStemmer method of type `function`',
+        function () {
+            assert(typeof stemmer.porterStemmer === 'function');
+        }
+    );
 
     it('should stem each `WordNode`', function () {
         tree.visitType(tree.WORD_NODE, function (wordNode) {
