@@ -2,7 +2,7 @@
   "name": "retext-porter-stemmer",
   "repository": "wooorm/retext-porter-stemmer",
   "description": "Retext implementation of the Porter Stemmer",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "keywords": [
     "porter",
     "stemmer",
