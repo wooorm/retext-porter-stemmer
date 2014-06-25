@@ -44,7 +44,7 @@ root.visitType(root.WORD_NODE, function (node) {
 This example also uses [retext-visit](https://github.com/wooorm/retext-visit).
 
 ## API
-None, the plugin automatically stems each word when its created or changed, and stores the stem in `wordNode.data.stem`.
+None, the plugin automatically stems each word (using [wooorm/stemmer](https://github.com/wooorm/stemmer)) when its created or changed, and stores the stem in `wordNode.data.stem`.
 
 ## Browser Support
 Pretty much every browser (available through browserstack) runs all retext-porter-stemmer unit tests.
