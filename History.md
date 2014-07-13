@@ -1,4 +1,13 @@
 
+n.n.n / 2014-07-13
+==================
+
+ * Added changelog
+ * Fixed for API changes in retext
+ * Update stemmer, eslint, istanbul, retext, retext-visit
+ * Removed functionality to browserify, complexity unit tests by default
+ * Mention which stemming implementation is used
+
 0.0.7 / 2014-06-24
 ==================
 
