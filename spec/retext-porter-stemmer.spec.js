@@ -39,7 +39,7 @@ describe('porterStemmer()', function () {
     it('should set each stem to `null` when a WordNode (no longer?) has ' +
         'a value', function () {
             tree.visitType(tree.WORD_NODE, function (wordNode) {
-                wordNode.fromString();
+                wordNode[0].fromString();
                 assert(wordNode.data.stem === null);
             });
     });
@@ -48,7 +48,7 @@ describe('porterStemmer()', function () {
         function () {
             var iterator = -1;
             tree.visitType(tree.WORD_NODE, function (wordNode) {
-                wordNode.fromString(otherWords[++iterator]);
+                wordNode[0].fromString(otherWords[++iterator]);
                 assert(wordNode.data.stem === otherStems[iterator]);
             });
     });
