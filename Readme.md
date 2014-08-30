@@ -49,6 +49,10 @@ None, the plugin automatically stems each word (using [wooorm/stemmer](https://g
 ## Browser Support
 Pretty much every browser (available through browserstack) runs all retext-porter-stemmer unit tests.
 
+## Related
+
+- [retext-lancaster-stemmer](https://github.com/wooorm/retext-lancaster-stemmer) — Same workings, but using the Lancaster (Paice/Husk) stemming algorithm.
+
 ## License
 
   MIT
