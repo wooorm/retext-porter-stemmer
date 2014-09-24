@@ -16,5 +16,3 @@ function attach(retext) {
 }
 
 exports.attach = attach;
-
-exports.porterStemmer = stemmer;
