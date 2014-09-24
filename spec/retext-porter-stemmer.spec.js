@@ -1,55 +1,87 @@
 'use strict';
 
-var stemmer, Retext, visit, assert, tree, otherWords, otherStems;
+var stemmer,
+    content,
+    visit,
+    Retext,
+    assert,
+    retext,
+    otherWords,
+    otherStems;
+
+/**
+ * Module dependencies.
+ */
 
 stemmer = require('..');
 Retext = require('retext');
 visit = require('retext-visit');
+content = require('retext-content');
 assert = require('assert');
 
-tree = new Retext()
+/**
+ * Retext.
+ */
+
+retext = new Retext()
     .use(visit)
-    .use(stemmer)
-    .parse('A simple, english, sentence');
+    .use(content)
+    .use(stemmer);
+
+/**
+ * Constants.
+ */
 
 otherWords = ['An', 'easy', 'normal', 'paragraph'];
 otherStems = ['An', 'easi', 'normal', 'paragraph'];
 
+/**
+ * Tests.
+ */
+
 describe('porterStemmer()', function () {
-    it('should be of type `function`', function () {
+    it('should be a `function`', function () {
         assert(typeof stemmer === 'function');
     });
 
-    it('should export an attach method of type `function`', function () {
+    it('should export an `attach` method', function () {
         assert(typeof stemmer.attach === 'function');
     });
 
-    it('should export a porterStemmer method of type `function`',
-        function () {
-            assert(typeof stemmer.porterStemmer === 'function');
-        }
-    );
-
-    it('should stem each `WordNode`', function () {
-        tree.visitType(tree.WORD_NODE, function (wordNode) {
-            assert('stem' in wordNode.data);
+    retext.parse('A simple, english, sentence', function (err, tree) {
+        it('should not throw', function (done) {
+            done(err);
         });
-    });
 
-    it('should set each stem to `null` when a WordNode (no longer?) has ' +
-        'a value', function () {
+        it('should `stem` each `WordNode`', function () {
             tree.visitType(tree.WORD_NODE, function (wordNode) {
-                wordNode[0].fromString();
-                assert(wordNode.data.stem === null);
+                assert('stem' in wordNode.data);
             });
-    });
+        });
 
-    it('should automatically re-stem `WordNode`s when their values change',
-        function () {
-            var iterator = -1;
-            tree.visitType(tree.WORD_NODE, function (wordNode) {
-                wordNode[0].fromString(otherWords[++iterator]);
-                assert(wordNode.data.stem === otherStems[iterator]);
-            });
+        it('should set each stem to `null` when a WordNode (no longer?) ' +
+            'has a value', function () {
+                tree.visitType(tree.WORD_NODE, function (wordNode) {
+                    wordNode.removeContent();
+
+                    assert(wordNode.data.stem === null);
+                });
+            }
+        );
+
+        it('should automatically re-stem `WordNode`s when their values ' +
+            'change',
+            function () {
+                var index;
+
+                index = -1;
+
+                tree.visitType(tree.WORD_NODE, function (wordNode) {
+                    wordNode.replaceContent(otherWords[++index]);
+
+                    assert(wordNode.data.stem === otherStems[index]);
+                });
+            }
+        );
     });
 });
