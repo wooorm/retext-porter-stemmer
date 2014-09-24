@@ -2,16 +2,16 @@
   "name": "retext-porter-stemmer",
   "version": "0.1.0",
   "description": "Retext implementation of the Porter Stemmer",
+  "license": "MIT",
   "keywords": [
     "porter",
     "stemmer",
     "retext"
   ],
-  "author": "Titus Wormer <tituswormer@gmail.com>",
-  "license": "MIT",
   "dependencies": {
     "stemmer": "^0.1.0"
   },
+  "author": "Titus Wormer <tituswormer@gmail.com>",
   "devDependencies": {
     "eslint": "^0.8.0",
     "istanbul": "^0.3.0",
