@@ -4,14 +4,19 @@
 
 ## Installation
 
-NPM:
+npm:
 ```sh
 $ npm install retext-porter-stemmer
 ```
 
-Component.js:
+Component:
 ```sh
 $ component install wooorm/retext-porter-stemmer
+```
+
+Bower:
+```sh
+$ bower install retext-porter-stemmer
 ```
 
 ## Usage
