@@ -1,0 +1,31 @@
+{
+  "name": "retext-porter-stemmer",
+  "main": "index.js",
+  "description": "Retext implementation of the Porter Stemmer",
+  "license": "MIT",
+  "keywords": [
+    "porter",
+    "stemmer",
+    "retext"
+  ],
+  "dependencies": {
+    "stemmer": "^0.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooorm/retext-porter-stemmer.git"
+  },
+  "authors": [
+    "Titus Wormer <tituswormer@gmail.com>"
+  ],
+  "ignore": [
+    ".*",
+    "*.log",
+    "*.md",
+    "component.json",
+    "package.json",
+    "coverage",
+    "node_modules",
+    "spec"
+  ]
+}
