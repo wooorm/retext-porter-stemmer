@@ -1,6 +1,13 @@
-language: "node_js"
-script: "npm run-script test-travis"
+language: node_js
+script: npm run-script test-travis
 node_js:
-  - "0.10"
-  - "0.11"
-after_script: "npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"
+- '0.10'
+- '0.11'
+after_script: npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls
+deploy:
+  provider: npm
+  email: tituswormer@gmail.com
+  api_key:
+    secure: VzDrmA9WOod3tSkQPySbOS2N2emsVrarQzMJpIuExzRXPKkCNFsOtRG+shTmCW99LF+v4IiDfaQVOjdCy/JPMCJtrfyGCNSk7vN9uvgsE4veFXW3C2vqytjo55FJkPPOEd7w6o2b1xWuTn1fZQGi2GfOp+cBXiKePcYPqP5m0Lw=
+  on:
+    repo: wooorm/retext-porter-stemmer
