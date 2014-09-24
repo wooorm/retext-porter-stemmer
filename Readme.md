@@ -46,4 +46,4 @@ None, the plugin automatically stems each word (using [wooorm/stemmer](https://g
 
 ## License
 
-  MIT
+MIT © Titus Wormer
