@@ -1,4 +1,25 @@
 
+n.n.n / 2014-09-25
+==================
+
+ * Add retext-content as a dev-dependency
+ * Update Readme.md
+ * Refactor API
+ * Add npm deployment to travis
+ * Remove `npm update` from travis
+ * Remove browser test
+ * Update .gitignore, .npmignore
+ * Update Installation in docs
+ * Add bower.json
+ * Fix property order in component.json, package.json
+ * Update copyright in Readme.md
+ * Remove testling
+ * Refactor spec for retext@0.2.0
+ * Remove `stemmer` from exports
+ * Update eslint, mocha, retext; broaden version ranges
+ * Add section on related projects
+ * Add components to gitignore
+
 0.1.0 / 2014-07-13
 ==================
 
