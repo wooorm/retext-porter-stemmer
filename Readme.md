@@ -44,9 +44,7 @@ retext.parse('A simple english sentence.', function (err, tree) {
 });
 ```
 
-The above example uses retext 0.2.0, which is currently in beta. For an example with the stable retext, see [retext-visit@0.1.0](https://github.com/wooorm/retext-porter-stemmer/tree/0.1.0).
-
-This example also uses [retext-visit](https://github.com/wooorm/retext-visit).
+The above example uses retext 0.2.0, which is currently in beta. For an example with the stable retext, see [retext-porter-stemmer@0.1.0](https://github.com/wooorm/retext-porter-stemmer/tree/0.1.0).
 
 ## API
 
