@@ -22,9 +22,9 @@ $ bower install retext-porter-stemmer
 ## Usage
 
 ```js
-var Retext,
-    visit,
-    porterStemmer,
+var Retext = require('retext'),
+    visit = require('retext-visit'),
+    porterStemmer = require('retext-porter-stemmer'),
     retext;
 
 retext = new Retext()
