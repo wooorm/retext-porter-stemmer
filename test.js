@@ -33,7 +33,7 @@ retext = new Retext()
  */
 
 otherWords = ['An', 'easy', 'normal', 'paragraph'];
-otherStems = ['An', 'easi', 'normal', 'paragraph'];
+otherStems = ['an', 'easi', 'normal', 'paragraph'];
 
 /**
  * Tests.
