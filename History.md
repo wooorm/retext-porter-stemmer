@@ -1,4 +1,15 @@
 
+n.n.n / 2014-10-14
+==================
+
+ * Update tests for changes in retext-visit
+ * Update stemmer, retext, retext-content, retext-visit
+ * Update test for changes in `stemmer`
+ * Update .gitignore, .npmignore, bower ignore
+ * Move spec to test.js
+ * Fix reference to project name in Readme.md
+ * Add missing `require` statements to examples in Readme.md
+
 0.1.1 / 2014-09-25
 ==================
 
