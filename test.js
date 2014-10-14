@@ -54,14 +54,14 @@ describe('porterStemmer()', function () {
         });
 
         it('should `stem` each `WordNode`', function () {
-            tree.visitType(tree.WORD_NODE, function (wordNode) {
+            tree.visit(tree.WORD_NODE, function (wordNode) {
                 assert('stem' in wordNode.data);
             });
         });
 
         it('should set each stem to `null` when a WordNode (no longer?) ' +
             'has a value', function () {
-                tree.visitType(tree.WORD_NODE, function (wordNode) {
+                tree.visit(tree.WORD_NODE, function (wordNode) {
                     wordNode.removeContent();
 
                     assert(wordNode.data.stem === null);
@@ -76,7 +76,7 @@ describe('porterStemmer()', function () {
 
                 index = -1;
 
-                tree.visitType(tree.WORD_NODE, function (wordNode) {
+                tree.visit(tree.WORD_NODE, function (wordNode) {
                     wordNode.replaceContent(otherWords[++index]);
 
                     assert(wordNode.data.stem === otherStems[index]);
