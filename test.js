@@ -46,10 +46,6 @@ describe('porterStemmer()', function () {
         assert(typeof stemmer === 'function');
     });
 
-    it('should export an `attach` method', function () {
-        assert(typeof stemmer.attach === 'function');
-    });
-
     retext.parse('A simple, english, sentence', function (err, tree) {
         it('should not throw', function (done) {
             done(err);
