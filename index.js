@@ -6,7 +6,7 @@ var porterStemmer = require('retext-porter-stemmer'),
     inputElement = document.getElementsByTagName('textarea')[0],
     outputElement = document.getElementsByTagName('div')[0],
     style = document.styleSheets[0],
-    stems = {}, currentDOMTree, currentTree;
+    stems = {}, currentDOMTree;
 
 function hashCode(str) {
     var hash = 0;
@@ -61,24 +61,29 @@ function stemAll() {
         currentDOMTree.parentNode.removeChild(currentDOMTree);
     }
 
-    currentTree = retext.parse(value);
-
-    currentTree.visit(function (node) {
-        var stem;
-
-        if (!node.DOMTagName || !node.data.stem) {
-            return;
+    retext.parse(value, function (err, tree) {
+        if (err) {
+            throw err;
         }
 
-        stem = node.data.stem.toLowerCase();
+        tree.visit(function (node) {
+            var stem;
 
-        onstem(stem);
+            if (!node.DOMTagName || !node.data.stem) {
+                return;
+            }
 
-        node.toDOMNode().setAttribute('data-stem', stem);
+            stem = node.data.stem.toLowerCase();
+
+            onstem(stem);
+
+            node.toDOMNode().setAttribute('data-stem', stem);
+        });
+
+        currentDOMTree = tree.toDOMNode();
+
+        outputElement.appendChild(currentDOMTree);
     });
-
-    currentDOMTree = currentTree.toDOMNode();
-    outputElement.appendChild(currentDOMTree);
 }
 
 inputElement.addEventListener('input', stemAll);
