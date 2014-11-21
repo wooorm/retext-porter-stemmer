@@ -22,33 +22,36 @@ $ bower install retext-porter-stemmer
 ## Usage
 
 ```js
-var Retext = require('retext'),
-    visit = require('retext-visit'),
-    porterStemmer = require('retext-porter-stemmer'),
-    retext;
+var Retext = require('retext');
+var visit = require('retext-visit');
+var inspect = require('retext-inspect');
+var porterStemmer = require('retext-porter-stemmer');
 
-retext = new Retext()
+var retext = new Retext()
+    .use(inspect)
     .use(visit)
     .use(porterStemmer)
 
 retext.parse('A simple english sentence.', function (err, tree) {
-    tree.visitType(root.WORD_NODE, function (node) {
-        console.log(node.toString(), node.data.stem);
+    tree.visit(tree.WORD_NODE, function (node) {
+        console.log(node);
     });
     /**
-     * 'A', 'A'
-     * 'simple', 'simpl'
-     * 'english', 'english'
-     * 'sentence', 'sentenc'
+     * WordNode[1] [data={"stem":"a"}]
+     * └─ TextNode: 'A'
+     * WordNode[1] [data={"stem":"simpl"}]
+     * └─ TextNode: 'simple'
+     * WordNode[1] [data={"stem":"english"}]
+     * └─ TextNode: 'english'
+     * WordNode[1] [data={"stem":"sentenc"}]
+     * └─ TextNode: 'sentence'
      */
 });
 ```
 
-The above example uses retext 0.2.0, which is currently in beta. For an example with the stable retext, see [retext-porter-stemmer@0.1.0](https://github.com/wooorm/retext-porter-stemmer/tree/0.1.0).
-
 ## API
 
-None, the plugin automatically stems each word (using [wooorm/stemmer](https://github.com/wooorm/stemmer)) when it’s created or changed, and stores the stem in `wordNode.data.stem`.
+None, the plugin automatically stems each word (using [wooorm/stemmer](https://github.com/wooorm/stemmer)), and stores the stem in `wordNode.data.stem`.
 
 ## Related
 
