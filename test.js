@@ -4,16 +4,18 @@
  * Dependencies.
  */
 
-var stemmer,
+var Retext,
+    stemmer,
+    inspect,
     content,
     visit,
-    Retext,
     assert;
 
-stemmer = require('./');
 Retext = require('retext');
-visit = require('retext-visit');
+stemmer = require('./');
+inspect = require('retext-inspect');
 content = require('retext-content');
+visit = require('retext-visit');
 assert = require('assert');
 
 /**
@@ -23,6 +25,7 @@ assert = require('assert');
 var retext;
 
 retext = new Retext()
+    .use(inspect)
     .use(visit)
     .use(content)
     .use(stemmer);
