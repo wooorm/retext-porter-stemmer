@@ -1,4 +1,4 @@
-# retext-porter-stemmer [![Build Status](https://travis-ci.org/wooorm/retext-porter-stemmer.svg?branch=master)](https://travis-ci.org/wooorm/retext-porter-stemmer) [![Coverage Status](https://img.shields.io/coveralls/wooorm/retext-porter-stemmer.svg)](https://coveralls.io/r/wooorm/retext-porter-stemmer?branch=master)
+# retext-porter-stemmer [![Build Status](https://img.shields.io/travis/wooorm/retext-porter-stemmer.svg?style=flat)](https://travis-ci.org/wooorm/retext-porter-stemmer) [![Coverage Status](https://img.shields.io/coveralls/wooorm/retext-porter-stemmer.svg?style=flat)](https://coveralls.io/r/wooorm/retext-porter-stemmer?branch=master)
 
 **[retext](https://github.com/wooorm/retext "Retext")** implementation of the [Porter stemming algorithm](http://tartarus.org/martin/PorterStemmer/).
 
