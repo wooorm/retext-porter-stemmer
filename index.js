@@ -1,12 +1,35 @@
-var porterStemmer = require('retext-porter-stemmer'),
-    visit = require('retext-visit'),
-    dom = require('retext-dom'),
-    Retext = require('retext'),
-    retext = new Retext().use(visit).use(porterStemmer).use(dom),
-    inputElement = document.getElementsByTagName('textarea')[0],
-    outputElement = document.getElementsByTagName('div')[0],
-    style = document.styleSheets[0],
-    stems = {}, currentDOMTree;
+/**
+ * Dependencies.
+ */
+
+var Retext = require('wooorm/retext@0.4.0');
+var stemmer = require('wooorm/retext-porter-stemmer@0.2.3');
+var dom = require('wooorm/retext-dom@0.2.4');
+var visit = require('wooorm/retext-visit@0.2.2');
+
+/**
+ * Retext.
+ */
+
+var retext = new Retext()
+    .use(visit)
+    .use(dom)
+    .use(stemmer);
+
+/**
+ * DOM elements.
+ */
+
+var $input = document.getElementsByTagName('textarea')[0];
+var $output = document.getElementsByTagName('div')[0];
+
+/**
+ * Get a color representation from a string.
+ */
+
+var style = document.styleSheets[0];
+
+var stems = {};
 
 function hashCode(str) {
     var hash = 0;
@@ -23,7 +46,7 @@ function intToARGB(i){
            (i&0xFF).toString(16);
 }
 
-function getColourFromString(value) {
+function getColorFromString(value) {
     value = intToARGB(hashCode(value)).slice(0, 6);
 
     while (value.length < 6) {
@@ -33,6 +56,10 @@ function getColourFromString(value) {
     return '#' + value;
 }
 
+/**
+ * Add a CSS rule.
+ */
+
 function addCSSRule(sheet, selector, rules) {
     if(sheet.insertRule) {
         sheet.insertRule(selector + '{' + rules + '}');
@@ -41,51 +68,55 @@ function addCSSRule(sheet, selector, rules) {
     }
 }
 
+/**
+ * Callback when new stems are calculated.
+ */
+
 function onstem(stem) {
-    var colour;
+    var color;
 
     if (stem in stems) {
         return;
     }
 
-    colour = getColourFromString(stem)
-    stems[stem] = colour;
+    color = getColorFromString(stem)
+    stems[stem] = color;
 
-    addCSSRule(style, '[data-stem="' + stem + '"]', 'color:' + colour);
+    addCSSRule(style, '[title="' + stem + '"]', 'color:' + color);
 }
 
-function stemAll() {
-    value = inputElement.value;
+/**
+ * Events
+ */
 
-    if (currentDOMTree) {
-        currentDOMTree.parentNode.removeChild(currentDOMTree);
+var tree;
+
+function oninputchange() {
+    if (tree) {
+        tree.toDOMNode().parentNode.removeChild(tree.toDOMNode());
     }
 
-    retext.parse(value, function (err, tree) {
-        if (err) {
-            throw err;
-        }
+    retext.parse($input.value, function (err, root) {
+        if (err) throw err;
+
+        tree = root;
 
         tree.visit(function (node) {
-            var stem;
-
             if (!node.DOMTagName || !node.data.stem) {
                 return;
             }
 
-            stem = node.data.stem.toLowerCase();
+            stem = node.data.stem;
 
             onstem(stem);
 
-            node.toDOMNode().setAttribute('data-stem', stem);
+            node.toDOMNode().setAttribute('title', stem);
         });
 
-        currentDOMTree = tree.toDOMNode();
-
-        outputElement.appendChild(currentDOMTree);
+        $output.appendChild(tree.toDOMNode());
     });
 }
 
-inputElement.addEventListener('input', stemAll);
+$input.addEventListener('input', oninputchange);
 
-stemAll();
+oninputchange();
