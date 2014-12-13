@@ -53,6 +53,21 @@ retext.parse('A simple english sentence.', function (err, tree) {
 
 None, **retext-porter-stemmer** automatically detects the stem of each [`WordNode`](https://github.com/wooorm/textom#textomwordnode-nlcstwordnode) (using **[wooorm/stemmer](https://github.com/wooorm/stemmer)**), and stores the stem in `node.data.stem`.
 
+
+## Performance
+
+On a MacBook Air, **retext** performs about 11% slower with **retext-porter-stemmer**.
+
+```
+           retext w/o retext-porter-stemmer
+  221 op/s » A paragraph (5 sentences, 100 words)
+   24 op/s » A section (10 paragraphs, 50 sentences, 1,000 words)
+
+           retext w/ retext-porter-stemmer
+  197 op/s » A paragraph (5 sentences, 100 words)
+   20 op/s » A section (10 paragraphs, 50 sentences, 1,000 words)
+```
+
 ## Related
 
 - [retext-lancaster-stemmer](https://github.com/wooorm/retext-lancaster-stemmer) — Same workings, but uses the Lancaster (Paice/Husk) stemming algorithm.
