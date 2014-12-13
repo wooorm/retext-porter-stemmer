@@ -1,6 +1,6 @@
 # retext-porter-stemmer [![Build Status](https://img.shields.io/travis/wooorm/retext-porter-stemmer.svg?style=flat)](https://travis-ci.org/wooorm/retext-porter-stemmer) [![Coverage Status](https://img.shields.io/coveralls/wooorm/retext-porter-stemmer.svg?style=flat)](https://coveralls.io/r/wooorm/retext-porter-stemmer?branch=master)
 
-**[retext](https://github.com/wooorm/retext "Retext")** implementation of the [Porter stemming algorithm](http://tartarus.org/martin/PorterStemmer/).
+**[retext](https://github.com/wooorm/retext)** implementation of the [Porter stemming algorithm](http://tartarus.org/martin/PorterStemmer/).
 
 ## Installation
 
@@ -51,7 +51,7 @@ retext.parse('A simple english sentence.', function (err, tree) {
 
 ## API
 
-None, the plugin automatically stems each word (using [wooorm/stemmer](https://github.com/wooorm/stemmer)), and stores the stem in `wordNode.data.stem`.
+None, **retext-porter-stemmer** automatically detects the stem of each [`WordNode`](https://github.com/wooorm/textom#textomwordnode-nlcstwordnode) (using **[wooorm/stemmer](https://github.com/wooorm/stemmer)**), and stores the stem in `node.data.stem`.
 
 ## Related
 
