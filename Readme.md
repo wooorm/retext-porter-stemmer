@@ -59,4 +59,4 @@ None, the plugin automatically stems each word (using [wooorm/stemmer](https://g
 
 ## License
 
-MIT © Titus Wormer
+MIT © [Titus Wormer](http://wooorm.com)
