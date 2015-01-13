@@ -14,7 +14,7 @@ stemmer = require('stemmer');
  * @this Node
  */
 
-function onchangetextinside() {
+function onchangeinside() {
     var value;
 
     value = this.toString();
@@ -29,13 +29,7 @@ function onchangetextinside() {
  */
 
 function porterStemmer(retext) {
-    var WordNode;
-
-    WordNode = retext.parser.TextOM.WordNode;
-
-    WordNode.on('changetextinside', onchangetextinside);
-    WordNode.on('removeinside', onchangetextinside);
-    WordNode.on('insertinside', onchangetextinside);
+    retext.TextOM.WordNode.on('changeinside', onchangeinside);
 }
 
 /**
