@@ -87,10 +87,10 @@
  * Dependencies.
  */
 
-var Retext = require('wooorm/retext@0.5.0-rc.1');
-var stemmer = require('wooorm/retext-porter-stemmer@0.2.4');
-var dom = require('wooorm/retext-dom@0.3.0');
-var visit = require('wooorm/retext-visit@0.2.3');
+var Retext = require('wooorm/retext@0.5.0');
+var stemmer = require('wooorm/retext-porter-stemmer@0.2.5');
+var dom = require('wooorm/retext-dom@0.3.2');
+var visit = require('wooorm/retext-visit@0.2.5');
 
 /**
  * Retext.
@@ -206,7 +206,7 @@ $input.addEventListener('input', oninputchange);
 
 oninputchange();
 
-}, {"wooorm/retext@0.5.0-rc.1":2,"wooorm/retext-porter-stemmer@0.2.4":3,"wooorm/retext-dom@0.3.0":4,"wooorm/retext-visit@0.2.3":5}],
+}, {"wooorm/retext@0.5.0":2,"wooorm/retext-porter-stemmer@0.2.5":3,"wooorm/retext-dom@0.3.2":4,"wooorm/retext-visit@0.2.5":5}],
 2: [function(require, module, exports) {
 'use strict';
 
@@ -215,7 +215,7 @@ var nlcstToTextOM,
     ParseLatin,
     Ware;
 
-/**
+/*
  * Dependencies.
  */
 
@@ -229,9 +229,8 @@ Ware = require('ware');
  *
  * @param {Function?} parser - the parser to use. Defaults
  *   to a new instance of `parse-latin`.
- * @constructor
+ * @constructor Retext
  */
-
 function Retext(parser) {
     var self,
         TextOM;
@@ -249,7 +248,7 @@ function Retext(parser) {
     self.parser = parser;
     self.TextOM = TextOM;
 
-    /**
+    /*
      * Expose `TextOM` on `parser`, and vice versa.
      */
 
@@ -276,9 +275,8 @@ function Retext(parser) {
  * it on completion.
  *
  * @param {function(Retext, Object): function(Node, Object, Function?)} plugin
- * @return this
+ * @return {Retext} - self
  */
-
 Retext.prototype.use = function (plugin, options) {
     var self,
         onparse;
@@ -303,7 +301,7 @@ Retext.prototype.use = function (plugin, options) {
 
     self = this;
 
-    /**
+    /*
      * Ware does not know which plugins are attached,
      * only which `onrun` methods are. Thus, we have
      * a custom list of `plugins`, and here we check
@@ -333,9 +331,8 @@ Retext.prototype.use = function (plugin, options) {
  * @param {Object} [options={}] - Optional settings.
  * @param {function(Error, Node)} done - Callback to
  *   invoke when the transformations have completed.
- * @return this
+ * @return {Retext} - self
  */
-
 Retext.prototype.parse = function (value, options, done) {
     var self,
         nlcst;
@@ -373,9 +370,8 @@ Retext.prototype.parse = function (value, options, done) {
  * @param {Object} [options={}] - Optional settings.
  * @param {function(Error, Node)} done - Callback to
  *   invoke when the transformations have completed.
- * @return this
+ * @return {Retext} - self
  */
-
 Retext.prototype.run = function (node, options, done) {
     var self;
 
@@ -401,7 +397,7 @@ Retext.prototype.run = function (node, options, done) {
     return self;
 };
 
-/**
+/*
  * Expose `Retext`.
  */
 
@@ -411,7 +407,7 @@ module.exports = Retext;
 6: [function(require, module, exports) {
 'use strict';
 
-/**
+/*
  * Constants.
  */
 
@@ -428,7 +424,6 @@ has = Object.prototype.hasOwnProperty;
  * @return {Node} From `nlcst` and `TextOM` constructed
  *   node.
  */
-
 function nlcstToTextOM(TextOM, nlcst) {
     var index,
         node,
@@ -472,7 +467,7 @@ module.exports = nlcstToTextOM;
 7: [function(require, module, exports) {
 'use strict';
 
-/**
+/*
  * Cached methods.
  */
 
@@ -488,7 +483,7 @@ arrayPrototype = Array.prototype;
 arraySlice = arrayPrototype.slice;
 arrayJoin = arrayPrototype.join;
 
-/**
+/*
  * Utilities.
  *
  * These utilities are specialised to work on nodes,
@@ -506,8 +501,8 @@ arrayJoin = arrayPrototype.join;
  * @param {Array.<*>} arrayLike
  * @param {*} value
  * @param {number} position
+ * @private
  */
-
 function arrayLikeMove(arrayLike, value, position) {
     var next;
 
@@ -539,8 +534,8 @@ function arrayLikeMove(arrayLike, value, position) {
  *
  * @param {Array.<*>} arrayLike
  * @param {number} position
+ * @private
  */
-
 function arrayLikeRemove(arrayLike, position) {
     while (arrayLike[position]) {
         arrayLike[position] = arrayLike[++position];
@@ -558,8 +553,8 @@ function arrayLikeRemove(arrayLike, position) {
  * @param {Array.<*>} arrayLike
  * @param {*} value
  * @return {number} position, or `-1`
+ * @private
  */
-
 function arrayLikeIndexOf(arrayLike, value) {
     var index;
 
@@ -574,7 +569,7 @@ function arrayLikeIndexOf(arrayLike, value) {
     return -1;
 }
 
-/**
+/*
  * Static node types.
  */
 
@@ -598,7 +593,7 @@ WHITE_SPACE_NODE = 'WhiteSpaceNode';
 SOURCE_NODE = 'SourceNode';
 TEXT_NODE = 'TextNode';
 
-/**
+/*
  * Static node names.
  */
 
@@ -617,20 +612,20 @@ TEXT = 'Text';
 /**
  * Invoke listeners while a condition returns true
  *
- * @param {function(this:Node, parameters...): function(): boolean} condition
+ * @param {function(): function(): boolean} condition
+ * @private
  */
-
 function invokeEvent(condition) {
     /**
      * Invoke every callback in `callbacks` with `parameters`
      * and `context` as its context object, while the condition
      * returns truthy.
      *
-     * @param {Array.<Function>} callbacks
+     * @param {Array.<Function>} handlers
+     * @param {string} name
      * @param {Array.<*>} parameters
      * @param {Node} context
      */
-
     return function (handlers, name, parameters, context) {
         var index,
             length,
@@ -665,7 +660,7 @@ function invokeEvent(condition) {
     };
 }
 
-/**
+/*
  * `remove` event condition.
  */
 
@@ -680,13 +675,12 @@ invokeEvent.remove = invokeEvent(function (previousParent) {
      *
      * @return {boolean}
      */
-
     return function () {
         return previousParent !== self.parent;
     };
 });
 
-/**
+/*
  * `insert` event condition.
  */
 
@@ -703,13 +697,12 @@ invokeEvent.insert = invokeEvent(function () {
      *
      * @return {boolean}
      */
-
     return function () {
         return parent === self.parent;
     };
 });
 
-/**
+/*
  * `insertinside` event condition.
  */
 
@@ -723,7 +716,7 @@ invokeEvent.insertinside = invokeEvent(function (node) {
     };
 });
 
-/**
+/*
  * `removeinside` event condition.
  */
 
@@ -733,7 +726,7 @@ invokeEvent.removeinside = invokeEvent(function (node, previousParent) {
     };
 });
 
-/**
+/*
  * Default conditional (always returns `true`).
  */
 
@@ -752,8 +745,8 @@ invokeAll = invokeEvent(function () {
  * @param {Parent} parent
  * @param {Child} child
  * @return {boolean}
+ * @private
  */
-
 function canInsertIntoParent(parent, child) {
     var allowed;
 
@@ -771,11 +764,11 @@ function canInsertIntoParent(parent, child) {
  * `parent`s head when `start` is not given.
  *
  * @param {Parent} parent
- * @param {Child} start
+ * @param {Child?} start
  * @param {Array.<Child>} children
  * @return {Array.<Child>} `children`.
+ * @private
  */
-
 function insertAll(parent, start, children) {
     var index,
         length,
@@ -798,7 +791,7 @@ function insertAll(parent, start, children) {
         );
     }
 
-    /**
+    /*
      * Exit early.
      */
 
@@ -827,7 +820,7 @@ function insertAll(parent, start, children) {
         }
     }
 
-    /**
+    /*
      * Remove `children` from their parents.
      */
 
@@ -850,14 +843,14 @@ function insertAll(parent, start, children) {
             );
         }
 
-        /**
+        /*
          * Detach `child`.
          */
 
         child.remove();
     }
 
-    /**
+    /*
      * Clean start and end after removal.
      */
 
@@ -869,7 +862,7 @@ function insertAll(parent, start, children) {
         indice = -1;
     }
 
-    /**
+    /*
      * Insert `children`.
      */
 
@@ -880,13 +873,13 @@ function insertAll(parent, start, children) {
     while (children[++index]) {
         child = children[index];
 
-        /**
+        /*
          * Set `child`s parent to parent.
          */
 
         child.parent = parent;
 
-        /**
+        /*
          * Set `child`s prev node to `prev` and
          * `prev`s next node to `child`.
          */
@@ -897,14 +890,14 @@ function insertAll(parent, start, children) {
             prev.next = child;
         }
 
-        /**
+        /*
          * Prepare for the next iteration.
          */
 
         prev = child;
     }
 
-    /**
+    /*
      * Set the `child`s next node to `end`.
      */
 
@@ -913,7 +906,7 @@ function insertAll(parent, start, children) {
         end.prev = prev;
     }
 
-    /**
+    /*
      * Update `head` and `tail`.
      */
 
@@ -927,7 +920,7 @@ function insertAll(parent, start, children) {
         parent.tail = prev;
     }
 
-    /**
+    /*
      * Update array-like representation.
      *
      * The linked-list representation is valid, but
@@ -945,7 +938,7 @@ function insertAll(parent, start, children) {
 
     parent.length += children.length;
 
-    /**
+    /*
      * Emit events.
      */
 
@@ -954,6 +947,14 @@ function insertAll(parent, start, children) {
     while (children[++index]) {
         children[index].trigger('insert', parent);
     }
+
+    /*
+     * Emit a single `change` event.
+     * This will also trigger `changeinside` events on
+     * `parent` and its constructors.
+     */
+
+    parent.trigger('change', parent);
 
     return children;
 }
@@ -966,8 +967,8 @@ function insertAll(parent, start, children) {
  * @param {Child} item
  * @param {Child} child
  * @return {Child} `child`.
+ * @private
  */
-
 function insert(parent, item, child) {
     var next,
         indice;
@@ -1007,7 +1008,7 @@ function insert(parent, item, child) {
         );
     }
 
-    /**
+    /*
      * Exit early.
      */
 
@@ -1015,13 +1016,13 @@ function insert(parent, item, child) {
         return child;
     }
 
-    /**
+    /*
      * Detach `child`.
      */
 
     child.remove();
 
-    /**
+    /*
      * Set `child`s parent to parent.
      */
 
@@ -1053,7 +1054,7 @@ function insert(parent, item, child) {
     }
 
     if (item || next) {
-        /**
+        /*
          * If `item` has a next node, link `child`s next
          * node, to `item`s next node, and link the next
          * nodes previous node to `child`.
@@ -1064,7 +1065,7 @@ function insert(parent, item, child) {
             next.prev = child;
         }
 
-        /**
+        /*
          * Set `child`s previous node to `item`, and set
          * the next node of `item` to `child`.
          */
@@ -1084,14 +1085,14 @@ function insert(parent, item, child) {
             }
         }
 
-        /**
+        /*
          * If the parent has no last node or if `item` is
          * `parent`s last node.
          */
 
         arrayLikeMove(parent, child, indice + 1);
     } else {
-        /**
+        /*
          * Prepend the node: There is no `head`, nor
          * `tail` node yet.
          *
@@ -1103,11 +1104,19 @@ function insert(parent, item, child) {
         parent.length = 1;
     }
 
-    /**
+    /*
      * Emit events.
      */
 
     child.trigger('insert', parent);
+
+    /*
+     * Emit a single `change` event.
+     * This will also trigger `changeinside` events on
+     * `parent` and its constructors.
+     */
+
+    parent.trigger('change', parent);
 
     return child;
 }
@@ -1117,8 +1126,8 @@ function insert(parent, item, child) {
  *
  * @param {Child} node
  * @return {Child} - `node`.
+ * @private
  */
-
 function remove(node) {
     var parent,
         prev,
@@ -1132,7 +1141,7 @@ function remove(node) {
         );
     }
 
-    /**
+    /*
      * Exit early when the node is already detached.
      */
 
@@ -1145,7 +1154,7 @@ function remove(node) {
     prev = node.prev;
     next = node.next;
 
-    /**
+    /*
      * If `node` is its parent's tail, link the
      * tail to `node`s previous item.
      */
@@ -1154,7 +1163,7 @@ function remove(node) {
         parent.tail = prev;
     }
 
-    /**
+    /*
      * If `node` is its parent's head, link the
      * head to `node`s next item.
      */
@@ -1163,7 +1172,7 @@ function remove(node) {
         parent.head = next;
     }
 
-    /**
+    /*
      * If node was its parent's only child,
      * remove the `tail` we just added.
      */
@@ -1172,7 +1181,7 @@ function remove(node) {
         parent.tail = null;
     }
 
-    /**
+    /*
      * If a previous item exists, link its next item to
      * `node`s next item.
      */
@@ -1181,7 +1190,7 @@ function remove(node) {
         prev.next = next;
     }
 
-    /**
+    /*
      * If a next item exists, link its previous item to
      * `node`s previous item.
      */
@@ -1202,7 +1211,7 @@ function remove(node) {
 
     arrayLikeRemove(parent, indice);
 
-    /**
+    /*
      * Remove links from `node` to both its next and
      * previous items, and its parent.
      */
@@ -1211,11 +1220,19 @@ function remove(node) {
     node.next = null;
     node.parent = null;
 
-    /**
+    /*
      * Emit events.
      */
 
     node.trigger('remove', parent, parent);
+
+    /*
+     * Emit a single `change` event.
+     * This will also trigger `changeinside` events on
+     * `parent` and its constructors.
+     */
+
+    parent.trigger('change', parent);
 
     return node;
 }
@@ -1225,9 +1242,9 @@ function remove(node) {
  *
  * @param {number} position
  * @param {number} length
- * @param {number} position - Normalised position.
+ * @return {number} - Normalised position.
+ * @private
  */
-
 function validateSplitPosition(position, length) {
     if (
         position === null ||
@@ -1250,7 +1267,14 @@ function validateSplitPosition(position, length) {
     return position;
 }
 
-function mergeData(node, nlcst) {
+/**
+ * Add data in a TextOM node to an NLCST node.
+ *
+ * @param {Node} node
+ * @param {NLCSTNode} nlcst
+ * @private
+ */
+function dataToJSON(node, nlcst) {
     var data,
         attribute;
 
@@ -1258,7 +1282,7 @@ function mergeData(node, nlcst) {
 
     for (attribute in data) {
         if (has.call(data, attribute)) {
-            /**
+            /*
              * This makes sure no empty data objects
              * are created.
              */
@@ -1272,6 +1296,99 @@ function mergeData(node, nlcst) {
     }
 }
 
+/**
+ * Inherit Super's prototype into a `Constructor`.
+ *
+ * Such as `Node` is implemented by `Parent`, `Parent`
+ * is implemented by `RootNode`, etc.
+ *
+ * @param {Function} Constructor
+ * @this {Function} - Super.
+ * @private
+ */
+function isImplementedBy(Constructor) {
+    var self,
+        constructors,
+        constructorPrototype,
+        key,
+        newPrototype;
+
+    self = this;
+
+    constructors = [Constructor].concat(self.constructors || [self]);
+
+    constructorPrototype = Constructor.prototype;
+
+    /**
+     * Construct a new prototype.
+     */
+    function AltConstructor () {}
+
+    AltConstructor.prototype = self.prototype;
+
+    newPrototype = new AltConstructor();
+
+    for (key in constructorPrototype) {
+        /*
+         * Note: Code climate, and probably other
+         * linters, will fail here. Thats okay,
+         * they're wrong.
+         */
+
+        newPrototype[key] = constructorPrototype[key];
+    }
+
+    /*
+     * Some browser do not enumerate custom
+     * `toString` methods, `Node.isImplementedBy`
+     * does cater for `toString`, but not others
+     * (`valueOf` and such).
+     */
+
+    if (constructorPrototype.toString !== {}.toString) {
+        newPrototype.toString = constructorPrototype.toString;
+    }
+
+    if (constructorPrototype.valueOf !== {}.valueOf) {
+        newPrototype.valueOf = constructorPrototype.valueOf;
+    }
+
+    /*
+     * Copy properties and methods on the Super (not
+     * its prototype) over to the given `Constructor`.
+     */
+
+    for (key in self) {
+        if (has.call(self, key)) {
+            Constructor[key] = self[key];
+        }
+    }
+
+    /*
+     * Enable nicely displayed `> Node` instead of
+     * `> Object` in some browser consoles.
+     */
+
+    newPrototype.constructor = Constructor;
+
+    /*
+     * Store all constructor function.
+     */
+
+    Constructor.constructors = constructors;
+
+    /*
+     * Set the new prototype.
+     */
+
+    Constructor.prototype = newPrototype;
+}
+
+/**
+ * Construct a new TextOM namespace.
+ *
+ * @return {TextOM}
+ */
 function TextOMConstructor() {
     var nodePrototype,
         parentPrototype,
@@ -1282,9 +1399,8 @@ function TextOMConstructor() {
     /**
      * Define `Node`.
      *
-     * @constructor
+     * @constructor Node
      */
-
     function Node() {
         if (!this.data) {
             this.data = {};
@@ -1298,19 +1414,18 @@ function TextOMConstructor() {
      *
      * @readonly
      * @static
+     * @memberof Node#
      */
-
     nodePrototype.nodeName = NODE;
 
     /**
      * Listen to an event.
      *
      * @param {string} name
-     * @param {function(...[*])} handler
+     * @param {function(...*)} handler
      * @this {Node|Function}
-     * @return self
+     * @return {Node|Function}
      */
-
     nodePrototype.on = Node.on = function (name, handler) {
         var self,
             handlers;
@@ -1361,9 +1476,8 @@ function TextOMConstructor() {
      * @param {string?} name
      * @param {function(...[*])?} handler
      * @this {Node|Function}
-     * @return self
+     * @return {Node|Function}
      */
-
     nodePrototype.off = Node.off = function (name, handler) {
         var self,
             handlers,
@@ -1429,13 +1543,12 @@ function TextOMConstructor() {
 
     /**
      * Emit an event.
+     * Passes all other arguments to the handlers.
      *
      * @param {string} name
-     * @param {...*} parameters
      * @this {Node}
-     * @return self
+     * @return {Node|boolean}
      */
-
     nodePrototype.emit = function (name) {
         var self,
             parameters,
@@ -1482,14 +1595,13 @@ function TextOMConstructor() {
 
     /**
      * Emit an event, and trigger a bubbling event on context.
+     * Passes all other arguments to the handlers.
      *
      * @param {string} name
      * @param {Node} context
-     * @param {...*} parameters
      * @this {Node}
-     * @return self
+     * @return {Node|boolean}
      */
-
     nodePrototype.trigger = function (name, context) {
         var self,
             node,
@@ -1500,7 +1612,7 @@ function TextOMConstructor() {
 
         parameters = arraySlice.call(arguments, 2);
 
-        /**
+        /*
          * Emit the event, exit with an error if it's canceled.
          */
 
@@ -1508,7 +1620,7 @@ function TextOMConstructor() {
             return false;
         }
 
-        /**
+        /*
          * Exit if no context exists.
          */
 
@@ -1516,7 +1628,7 @@ function TextOMConstructor() {
             return true;
         }
 
-        /**
+        /*
          * Start firing bubbling events.
          */
 
@@ -1543,97 +1655,18 @@ function TextOMConstructor() {
         return true;
     };
 
-    /**
-     * Inherit Super's prototype into a `Constructor`.
-     *
-     * Such as `Node` is implemented by `Parent`, `Parent`
-     * is implemented by `RootNode`, etc.
-     *
-     * @param {Function} Constructor
-     * @this {Function} - Super.
+    /*
+     * Expose `isImplementedBy` on Node.
      */
 
-    Node.isImplementedBy = function (Constructor) {
-        var self,
-            constructors,
-            constructorPrototype,
-            key,
-            newPrototype;
-
-        self = this;
-
-        constructors = [Constructor].concat(self.constructors || [self]);
-
-        constructorPrototype = Constructor.prototype;
-
-        function AltConstructor () {}
-
-        AltConstructor.prototype = self.prototype;
-
-        newPrototype = new AltConstructor();
-
-        for (key in constructorPrototype) {
-            /**
-             * Note: Code climate, and probably other
-             * linters, will fail here. Thats okay,
-             * they're wrong.
-             */
-
-            newPrototype[key] = constructorPrototype[key];
-        }
-
-        /**
-         * Some browser do not enumerate custom
-         * `toString` methods, `Node.isImplementedBy`
-         * does cater for `toString`, but not others
-         * (`valueOf` and such).
-         */
-
-        if (constructorPrototype.toString !== {}.toString) {
-            newPrototype.toString = constructorPrototype.toString;
-        }
-
-        if (constructorPrototype.valueOf !== {}.valueOf) {
-            newPrototype.valueOf = constructorPrototype.valueOf;
-        }
-
-        /**
-         * Copy properties and methods on the Super (not
-         * its prototype) over to the given `Constructor`.
-         */
-
-        for (key in self) {
-            if (has.call(self, key)) {
-                Constructor[key] = self[key];
-            }
-        }
-
-        /**
-         * Enable nicely displayed `> Node` instead of
-         * `> Object` in some browser consoles.
-         */
-
-        newPrototype.constructor = Constructor;
-
-        /**
-         * Store all constructor function.
-         */
-
-        Constructor.constructors = constructors;
-
-        /**
-         * Set the new prototype.
-         */
-
-        Constructor.prototype = newPrototype;
-    };
+    Node.isImplementedBy = isImplementedBy;
 
     /**
      * Define `Parent`.
      *
-     * @constructor
+     * @constructor Parent
+     * @extends {Node}
      */
-
     function Parent() {
         Node.apply(this, arguments);
     }
@@ -1646,7 +1679,6 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     parentPrototype.nodeName = PARENT;
 
     /**
@@ -1655,7 +1687,6 @@ function TextOMConstructor() {
      * @type {Child?}
      * @readonly
      */
-
     parentPrototype.head = null;
 
     /**
@@ -1665,7 +1696,6 @@ function TextOMConstructor() {
      * @type {Child?}
      * @readonly
      */
-
     parentPrototype.tail = null;
 
     /**
@@ -1674,7 +1704,6 @@ function TextOMConstructor() {
      * @type {number}
      * @readonly
      */
-
     parentPrototype.length = 0;
 
     /**
@@ -1684,7 +1713,6 @@ function TextOMConstructor() {
      *   head.
      * @return {self}
      */
-
     parentPrototype.prepend = function (child) {
         return insert(this, null, child);
     };
@@ -1696,7 +1724,6 @@ function TextOMConstructor() {
      *   insert at the start.
      * @return {self}
      */
-
     parentPrototype.prependAll = function (children) {
         return insertAll(this, null, children);
     };
@@ -1708,7 +1735,6 @@ function TextOMConstructor() {
      *   tail.
      * @return {self}
      */
-
     parentPrototype.append = function (child) {
         return insert(this, this.tail || this.head, child);
     };
@@ -1720,7 +1746,6 @@ function TextOMConstructor() {
      *   insert at the end.
      * @return {self}
      */
-
     parentPrototype.appendAll = function (children) {
         return insertAll(this, this.tail || this.head, children);
     };
@@ -1731,7 +1756,6 @@ function TextOMConstructor() {
      * @param {number?} [index=0] - Position of `child`;
      * @return {Child?}
      */
-
     parentPrototype.item = function (index) {
         if (index === null || index === undefined) {
             index = 0;
@@ -1752,7 +1776,6 @@ function TextOMConstructor() {
      * @this {Parent}
      * @return {string}
      */
-
     parentPrototype.toString = function () {
         return arrayJoin.call(this, '');
     };
@@ -1763,7 +1786,6 @@ function TextOMConstructor() {
      * @this {Parent}
      * @return {NLCSTNode}
      */
-
     parentPrototype.valueOf = function () {
         var self,
             index,
@@ -1785,12 +1807,12 @@ function TextOMConstructor() {
             children[index] = self[index].valueOf();
         }
 
-        mergeData(self, nlcst);
+        dataToJSON(self, nlcst);
 
         return nlcst;
     };
 
-    /**
+    /*
      * Inherit from `Node.prototype`.
      */
 
@@ -1799,16 +1821,16 @@ function TextOMConstructor() {
     /**
      * Define `Child`.
      *
-     * @constructor
+     * @constructor Child
+     * @extends {Node}
      */
-
     function Child() {
         Node.apply(this, arguments);
     }
 
     childPrototype = Child.prototype;
 
-    /**
+    /*
      * Expose the node name of `Child`.
      *
      * @readonly
@@ -1817,7 +1839,7 @@ function TextOMConstructor() {
 
     childPrototype.nodeName = CHILD;
 
-    /**
+    /*
      * Parent or `null`.
      *
      * @type {Parent?}
@@ -1826,7 +1848,7 @@ function TextOMConstructor() {
 
     childPrototype.parent = null;
 
-    /**
+    /*
      * The next node, `null` otherwise (when `child` is
      * its parent's tail or detached).
      *
@@ -1836,7 +1858,7 @@ function TextOMConstructor() {
 
     childPrototype.next = null;
 
-    /**
+    /*
      * The previous node, `null` otherwise (when `child` is
      * its parent's head or detached).
      *
@@ -1853,7 +1875,6 @@ function TextOMConstructor() {
      * @this {Child}
      * @return {self}
      */
-
     childPrototype.before = function (child) {
         return insert(this.parent, this.prev, child);
     };
@@ -1866,7 +1887,6 @@ function TextOMConstructor() {
      * @this {Child}
      * @return {self}
      */
-
     childPrototype.beforeAll = function (children) {
         return insertAll(this.parent, this.prev, children);
     };
@@ -1878,7 +1898,6 @@ function TextOMConstructor() {
      * @this {Child}
      * @return {self}
      */
-
     childPrototype.after = function (child) {
         return insert(this.parent, this, child);
     };
@@ -1891,7 +1910,6 @@ function TextOMConstructor() {
      * @this {Child}
      * @return {self}
      */
-
     childPrototype.afterAll = function (children) {
         return insertAll(this.parent, this, children);
     };
@@ -1903,7 +1921,6 @@ function TextOMConstructor() {
      * @this {Child}
      * @return {self}
      */
-
     childPrototype.replace = function (child) {
         var result;
 
@@ -1920,12 +1937,11 @@ function TextOMConstructor() {
      * @this {Child}
      * @return {self}
      */
-
     childPrototype.remove = function () {
         return remove(this);
     };
 
-    /**
+    /*
      * Inherit from `Node.prototype`.
      */
 
@@ -1934,15 +1950,16 @@ function TextOMConstructor() {
     /**
      * Define `Element`.
      *
-     * @constructor
+     * @constructor Element
+     * @extends {Parent}
+     * @extends {Child}
      */
-
     function Element() {
         Parent.apply(this, arguments);
         Child.apply(this, arguments);
     }
 
-    /**
+    /*
      * Inherit from `Parent.prototype` and
      * `Child.prototype`.
      */
@@ -1961,7 +1978,6 @@ function TextOMConstructor() {
      * @this {Parent}
      * @return {self}
      */
-
     Element.prototype.split = function (position) {
         var self,
             cloneNode,
@@ -1977,7 +1993,7 @@ function TextOMConstructor() {
 
         index = -1;
 
-        /**
+        /*
          * Move the children of `self` to the clone,
          * from `0` to `position`. Looks a bit weird,
          * but when a node is appended, it's also
@@ -1991,7 +2007,7 @@ function TextOMConstructor() {
         return cloneNode;
     };
 
-    /**
+    /*
      * Add Parent as a constructor (which it is)
      */
 
@@ -2003,15 +2019,15 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     Element.prototype.nodeName = ELEMENT;
 
     /**
      * Define `Text`.
      *
-     * @constructor
+     * @param {string?} value
+     * @constructor Text
+     * @extends {Child}
      */
-
     function Text(value) {
         Child.apply(this, arguments);
 
@@ -2020,7 +2036,7 @@ function TextOMConstructor() {
 
     textPrototype = Text.prototype;
 
-    /**
+    /*
      * Expose the node name of `Text`.
      *
      * @readonly
@@ -2029,7 +2045,7 @@ function TextOMConstructor() {
 
     textPrototype.nodeName = TEXT;
 
-    /**
+    /*
      * Default value.
      */
 
@@ -2041,7 +2057,6 @@ function TextOMConstructor() {
      * @this {Text}
      * @return {string}
      */
-
     textPrototype.toString = function () {
         return this.internalValue;
     };
@@ -2052,7 +2067,6 @@ function TextOMConstructor() {
      * @this {Text}
      * @return {NLCSTNode}
      */
-
     textPrototype.valueOf = function () {
         var self,
             nlcst;
@@ -2064,7 +2078,7 @@ function TextOMConstructor() {
             'value': self.internalValue
         };
 
-        mergeData(self, nlcst);
+        dataToJSON(self, nlcst);
 
         return nlcst;
     };
@@ -2077,10 +2091,10 @@ function TextOMConstructor() {
      * @this {Text}
      * @return {string}
      */
-
     textPrototype.fromString = function (value) {
         var self,
-            current;
+            current,
+            parent;
 
         self = this;
 
@@ -2093,9 +2107,21 @@ function TextOMConstructor() {
         current = self.toString();
 
         if (value !== current) {
+            parent = self.parent;
+
             self.internalValue = value;
 
-            self.trigger('changetext', self.parent, value, current);
+            self.trigger('changetext', parent, value, current);
+
+            /*
+             * Emit a single `change` event.
+             * This will also trigger `changeinside` events on
+             * `parent` and its constructors.
+             */
+
+            if (parent) {
+                parent.trigger('change', parent);
+            }
         }
 
         return value;
@@ -2112,7 +2138,6 @@ function TextOMConstructor() {
      * @this {Text}
      * @return {self}
      */
-
     textPrototype.split = function (position) {
         var self,
             value,
@@ -2133,7 +2158,7 @@ function TextOMConstructor() {
         return cloneNode;
     };
 
-    /**
+    /*
      * Inherit from `Child.prototype`.
      */
 
@@ -2142,9 +2167,9 @@ function TextOMConstructor() {
     /**
      * Define `RootNode`.
      *
-     * @constructor
+     * @constructor RootNode
+     * @extends {Parent}
      */
-
     function RootNode() {
         Parent.apply(this, arguments);
     }
@@ -2155,7 +2180,6 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     RootNode.prototype.type = ROOT_NODE;
 
     /**
@@ -2163,14 +2187,13 @@ function TextOMConstructor() {
      *
      * @readonly
      */
-
     RootNode.prototype.allowedChildTypes = [
         PARAGRAPH_NODE,
         WHITE_SPACE_NODE,
         SOURCE_NODE
     ];
 
-    /**
+    /*
      * Inherit from `Parent.prototype`.
      */
 
@@ -2179,9 +2202,9 @@ function TextOMConstructor() {
     /**
      * Define `ParagraphNode`.
      *
-     * @constructor
+     * @constructor ParagraphNode
+     * @extends {Element}
      */
-
     function ParagraphNode() {
         Element.apply(this, arguments);
     }
@@ -2192,7 +2215,6 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     ParagraphNode.prototype.type = PARAGRAPH_NODE;
 
     /**
@@ -2200,14 +2222,13 @@ function TextOMConstructor() {
      *
      * @readonly
      */
-
     ParagraphNode.prototype.allowedChildTypes = [
         SENTENCE_NODE,
         WHITE_SPACE_NODE,
         SOURCE_NODE
     ];
 
-    /**
+    /*
      * Inherit from `Parent.prototype` and `Child.prototype`.
      */
 
@@ -2216,9 +2237,9 @@ function TextOMConstructor() {
     /**
      * Define `SentenceNode`.
      *
-     * @constructor
+     * @constructor SentenceNode
+     * @extends {Element}
      */
-
     function SentenceNode() {
         Element.apply(this, arguments);
     }
@@ -2229,7 +2250,6 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     SentenceNode.prototype.type = SENTENCE_NODE;
 
     /**
@@ -2237,7 +2257,6 @@ function TextOMConstructor() {
      *
      * @readonly
      */
-
     SentenceNode.prototype.allowedChildTypes = [
         WORD_NODE,
         SYMBOL_NODE,
@@ -2246,7 +2265,7 @@ function TextOMConstructor() {
         SOURCE_NODE
     ];
 
-    /**
+    /*
      * Inherit from `Parent.prototype` and `Child.prototype`.
      */
 
@@ -2254,8 +2273,10 @@ function TextOMConstructor() {
 
     /**
      * Define `WordNode`.
+     *
+     * @constructor WordNode
+     * @extends {Element}
      */
-
     function WordNode() {
         Element.apply(this, arguments);
     }
@@ -2266,7 +2287,6 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     WordNode.prototype.type = WORD_NODE;
 
     /**
@@ -2274,14 +2294,13 @@ function TextOMConstructor() {
      *
      * @readonly
      */
-
     WordNode.prototype.allowedChildTypes = [
         TEXT_NODE,
         SYMBOL_NODE,
         PUNCTUATION_NODE
     ];
 
-    /**
+    /*
      * Inherit from `Text.prototype`.
      */
 
@@ -2289,8 +2308,10 @@ function TextOMConstructor() {
 
     /**
      * Define `SymbolNode`.
+     *
+     * @constructor SymbolNode
+     * @extends {Text}
      */
-
     function SymbolNode() {
         Text.apply(this, arguments);
     }
@@ -2301,10 +2322,9 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     SymbolNode.prototype.type = SYMBOL_NODE;
 
-    /**
+    /*
      * Inherit from `SymbolNode.prototype`.
      */
 
@@ -2312,8 +2332,10 @@ function TextOMConstructor() {
 
     /**
      * Define `PunctuationNode`.
+     *
+     * @constructor PunctuationNode
+     * @extends {Text}
      */
-
     function PunctuationNode() {
         SymbolNode.apply(this, arguments);
     }
@@ -2324,10 +2346,9 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     PunctuationNode.prototype.type = PUNCTUATION_NODE;
 
-    /**
+    /*
      * Inherit from `SymbolNode.prototype`.
      */
 
@@ -2335,8 +2356,10 @@ function TextOMConstructor() {
 
     /**
      * Expose `WhiteSpaceNode`.
+     *
+     * @constructor WhiteSpaceNode
+     * @extends {Text}
      */
-
     function WhiteSpaceNode() {
         SymbolNode.apply(this, arguments);
     }
@@ -2347,19 +2370,19 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     WhiteSpaceNode.prototype.type = WHITE_SPACE_NODE;
 
     /**
      * Inherit from `SymbolNode.prototype`.
      */
-
     SymbolNode.isImplementedBy(WhiteSpaceNode);
 
-    /**
+    /***
      * Expose `SourceNode`.
+     *
+     * @constructor SourceNode
+     * @extends {Text}
      */
-
     function SourceNode() {
         Text.apply(this, arguments);
     }
@@ -2370,10 +2393,9 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     SourceNode.prototype.type = SOURCE_NODE;
 
-    /**
+    /*
      * Inherit from `Text.prototype`.
      */
 
@@ -2381,8 +2403,10 @@ function TextOMConstructor() {
 
     /**
      * Expose `TextNode`.
+     *
+     * @constructor TextNode
+     * @extends {Text}
      */
-
     function TextNode() {
         Text.apply(this, arguments);
     }
@@ -2393,10 +2417,9 @@ function TextOMConstructor() {
      * @readonly
      * @static
      */
-
     TextNode.prototype.type = TEXT_NODE;
 
-    /**
+    /*
      * Inherit from `Text.prototype`.
      */
 
@@ -2404,17 +2427,12 @@ function TextOMConstructor() {
 
     /**
      * Define the `TextOM` object.
+     *
+     * @namespace TextOM
      */
-
     TextOM = {};
 
-    /**
-     * Expose `TextOM` on every `Node`.
-     */
-
-    nodePrototype.TextOM = TextOM;
-
-    /**
+    /*
      * Expose all node names on `TextOM`.
      */
 
@@ -2424,45 +2442,7 @@ function TextOMConstructor() {
     TextOM.ELEMENT = ELEMENT;
     TextOM.TEXT = TEXT;
 
-    /**
-     * Expose all node names on every `Node`.
-     */
-
-    nodePrototype.NODE = NODE;
-    nodePrototype.PARENT = PARENT;
-    nodePrototype.CHILD = CHILD;
-    nodePrototype.ELEMENT = ELEMENT;
-    nodePrototype.TEXT = TEXT;
-
-    /**
-     * Expose all node types on `TextOM`.
-     */
-
-    TextOM.ROOT_NODE = ROOT_NODE;
-    TextOM.PARAGRAPH_NODE = PARAGRAPH_NODE;
-    TextOM.SENTENCE_NODE = SENTENCE_NODE;
-    TextOM.WORD_NODE = WORD_NODE;
-    TextOM.SYMBOL_NODE = SYMBOL_NODE;
-    TextOM.PUNCTUATION_NODE = PUNCTUATION_NODE;
-    TextOM.WHITE_SPACE_NODE = WHITE_SPACE_NODE;
-    TextOM.SOURCE_NODE = SOURCE_NODE;
-    TextOM.TEXT_NODE = TEXT_NODE;
-
-    /**
-     * Expose all node types on every `Node`.
-     */
-
-    nodePrototype.ROOT_NODE = ROOT_NODE;
-    nodePrototype.PARAGRAPH_NODE = PARAGRAPH_NODE;
-    nodePrototype.SENTENCE_NODE = SENTENCE_NODE;
-    nodePrototype.WORD_NODE = WORD_NODE;
-    nodePrototype.SYMBOL_NODE = SYMBOL_NODE;
-    nodePrototype.PUNCTUATION_NODE = PUNCTUATION_NODE;
-    nodePrototype.WHITE_SPACE_NODE = WHITE_SPACE_NODE;
-    nodePrototype.SOURCE_NODE = SOURCE_NODE;
-    nodePrototype.TEXT_NODE = TEXT_NODE;
-
-    /**
+    /*
      * Expose all different `Node`s on `TextOM`.
      */
 
@@ -2481,14 +2461,58 @@ function TextOMConstructor() {
     TextOM.SourceNode = SourceNode;
     TextOM.TextNode = TextNode;
 
-    /**
+    /*
+     * Expose all node types on `TextOM`.
+     */
+
+    TextOM.ROOT_NODE = ROOT_NODE;
+    TextOM.PARAGRAPH_NODE = PARAGRAPH_NODE;
+    TextOM.SENTENCE_NODE = SENTENCE_NODE;
+    TextOM.WORD_NODE = WORD_NODE;
+    TextOM.SYMBOL_NODE = SYMBOL_NODE;
+    TextOM.PUNCTUATION_NODE = PUNCTUATION_NODE;
+    TextOM.WHITE_SPACE_NODE = WHITE_SPACE_NODE;
+    TextOM.SOURCE_NODE = SOURCE_NODE;
+    TextOM.TEXT_NODE = TEXT_NODE;
+
+    /*
+     * Expose `TextOM` on every `Node`.
+     */
+
+    nodePrototype.TextOM = TextOM;
+
+    /*
+     * Expose all node names on every `Node`.
+     */
+
+    nodePrototype.NODE = NODE;
+    nodePrototype.PARENT = PARENT;
+    nodePrototype.CHILD = CHILD;
+    nodePrototype.ELEMENT = ELEMENT;
+    nodePrototype.TEXT = TEXT;
+
+    /*
+     * Expose all node types on every `Node`.
+     */
+
+    nodePrototype.ROOT_NODE = ROOT_NODE;
+    nodePrototype.PARAGRAPH_NODE = PARAGRAPH_NODE;
+    nodePrototype.SENTENCE_NODE = SENTENCE_NODE;
+    nodePrototype.WORD_NODE = WORD_NODE;
+    nodePrototype.SYMBOL_NODE = SYMBOL_NODE;
+    nodePrototype.PUNCTUATION_NODE = PUNCTUATION_NODE;
+    nodePrototype.WHITE_SPACE_NODE = WHITE_SPACE_NODE;
+    nodePrototype.SOURCE_NODE = SOURCE_NODE;
+    nodePrototype.TEXT_NODE = TEXT_NODE;
+
+    /*
      * Expose `TextOM`.
      */
 
     return TextOM;
 }
 
-/**
+/*
  * Expose `TextOMConstructor`.
  */
 
@@ -3179,7 +3203,6 @@ module.exports = tokenizerFactory;
  * @param {NLCSTNode} nlcst
  * @return {string}
  */
-
 function nlcstToString(nlcst) {
     var values,
         length,
@@ -3208,6 +3231,10 @@ function nlcstToString(nlcst) {
 
     return values.join('');
 }
+
+/*
+ * Expose `nlcstToString`.
+ */
 
 module.exports = nlcstToString;
 
@@ -4711,9 +4738,8 @@ Ware.prototype.run = function () {
  * Module Dependencies
  */
 
-var slice = [].slice;
-var co = require('co');
 var noop = function(){};
+var co = require('co');
 
 /**
  * Export `wrap-fn`
@@ -4732,10 +4758,15 @@ module.exports = wrap;
  */
 
 function wrap(fn, done) {
-  done = done || noop;
+  done = once(done || noop);
 
   return function() {
-    var args = slice.call(arguments);
+    // prevents arguments leakage
+    // see https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
+    var i = arguments.length;
+    var args = new Array(i);
+    while (i--) args[i] = arguments[i];
+
     var ctx = this;
 
     // done
@@ -4745,7 +4776,12 @@ function wrap(fn, done) {
 
     // async
     if (fn.length > args.length) {
-      return fn.apply(ctx, args.concat(done));
+      // NOTE: this only handles uncaught synchronous errors
+      try {
+        return fn.apply(ctx, args.concat(done));
+      } catch (e) {
+        return done(e);
+      }
     }
 
     // generator
@@ -4810,6 +4846,18 @@ function generator(value) {
 
 function promise(value) {
   return value && 'function' == typeof value.then;
+}
+
+/**
+ * Once
+ */
+
+function once(fn) {
+  return function() {
+    var ret = fn.apply(this, arguments);
+    fn = noop;
+    return ret;
+  };
 }
 
 }, {"co":33}],
@@ -5115,7 +5163,7 @@ function error(err) {
 
 var stemmer;
 
-/**
+/*
  * Module dependencies.
  */
 
@@ -5126,8 +5174,7 @@ stemmer = require('stemmer');
  *
  * @this Node
  */
-
-function onchangetextinside() {
+function onchangeinside() {
     var value;
 
     value = this.toString();
@@ -5140,18 +5187,11 @@ function onchangetextinside() {
  *
  * @param {Retext} retext - Instance of Retext.
  */
-
 function porterStemmer(retext) {
-    var WordNode;
-
-    WordNode = retext.parser.TextOM.WordNode;
-
-    WordNode.on('changetextinside', onchangetextinside);
-    WordNode.on('removeinside', onchangetextinside);
-    WordNode.on('insertinside', onchangetextinside);
+    retext.TextOM.WordNode.on('changeinside', onchangeinside);
 }
 
-/**
+/*
  * Expose `porterStemmer`.
  */
 
@@ -5161,7 +5201,7 @@ module.exports = porterStemmer;
 34: [function(require, module, exports) {
 'use strict';
 
-/**
+/*
  * Define few standard suffix manipulations.
  */
 
@@ -5202,7 +5242,7 @@ step3list = {
     'ness': ''
 };
 
-/**
+/*
  * Define few consonant-vowel sequences.
  */
 
@@ -5243,7 +5283,7 @@ EXPRESSION_CONSONANT_LIKE = new RegExp(
     '^' + consonantSequence + vowel + '[^aeiouwxy]$'
 );
 
-/**
+/*
  * Define few exception-expressions.
  */
 
@@ -5294,7 +5334,7 @@ EXPRESSION_STEP_4 = new RegExp(
     'iti|ous|ive|ize)$'
 );
 
-/**
+/*
  * Detect the character code for `y`.
  */
 
@@ -5303,19 +5343,18 @@ var CHARACTER_CODE_Y;
 CHARACTER_CODE_Y = 'y'.charCodeAt(0);
 
 /**
- * Define `stemmer`.
+ * Stem `value`.
  *
  * @param {string} value
- * @return {string} Stem corresponding to `value`.
+ * @return {string} - Stem corresponding to `value`.
  */
-
 function stemmer(value) {
     var firstCharacterWasLowerCaseY,
         match;
 
     value = String(value).toLowerCase();
 
-    /**
+    /*
      * Exit early.
      */
 
@@ -5323,7 +5362,7 @@ function stemmer(value) {
         return value;
     }
 
-    /**
+    /*
      * Detect initial `y`, make sure it never
      * matches.
      */
@@ -5333,31 +5372,31 @@ function stemmer(value) {
         value = 'Y' + value.substr(1);
     }
 
-    /**
+    /*
      * Step 1a.
      */
 
     if (EXPRESSION_SUFFIX_SSES_OR_IES.test(value)) {
-        /**
+        /*
          * Remove last two characters.
          */
 
         value = value.substr(0, value.length - 2);
     } else if (EXPRESSION_SUFFIX_S.test(value)) {
-        /**
+        /*
          * Remove last character.
          */
 
         value = value.substr(0, value.length - 1);
     }
 
-    /**
+    /*
      * Step 1b.
      */
 
     if (match = EXPRESSION_SUFFIX_EED.exec(value)) {
         if (EXPRESSION_MEASURE_GREATER_THAN_0.test(match[1])) {
-            /**
+            /*
              * Remove last character.
              */
 
@@ -5370,7 +5409,7 @@ function stemmer(value) {
         value = match[1];
 
         if (EXPRESSION_SUFFIX_AT_OR_BL_OR_IZ.test(value)) {
-            /**
+            /*
              * Append `e`.
              */
 
@@ -5378,13 +5417,13 @@ function stemmer(value) {
         } else if (
             EXPRESSION_SUFFIX_MULTI_CONSONANT_LIKE.test(value)
         ) {
-            /**
+            /*
              * Remove last character.
              */
 
             value = value.substr(0, value.length - 1);
         } else if (EXPRESSION_CONSONANT_LIKE.test(value)) {
-            /**
+            /*
              * Append `e`.
              */
 
@@ -5392,7 +5431,7 @@ function stemmer(value) {
         }
     }
 
-    /**
+    /*
      * Step 1c.
      */
 
@@ -5400,14 +5439,14 @@ function stemmer(value) {
         (match = EXPRESSION_SUFFIX_Y.exec(value)) &&
         EXPRESSION_VOWEL_IN_STEM.test(match[1])
     ) {
-        /**
+        /*
          * Remove suffixing `y` and append `i`.
          */
 
         value = match[1] + 'i';
     }
 
-    /**
+    /*
      * Step 2.
      */
 
@@ -5418,7 +5457,7 @@ function stemmer(value) {
         value = match[1] + step2list[match[2]];
     }
 
-    /**
+    /*
      * Step 3.
      */
 
@@ -5429,7 +5468,7 @@ function stemmer(value) {
         value = match[1] + step3list[match[2]];
     }
 
-    /**
+    /*
      * Step 4.
      */
 
@@ -5444,7 +5483,7 @@ function stemmer(value) {
         value = match[1];
     }
 
-    /**
+    /*
      * Step 5.
      */
 
@@ -5468,7 +5507,7 @@ function stemmer(value) {
         value = value.substr(0, value.length - 1);
     }
 
-    /**
+    /*
      * Turn initial `Y` back to `y`.
      */
 
@@ -5479,7 +5518,7 @@ function stemmer(value) {
     return value;
 }
 
-/**
+/*
  * Expose `stemmer`.
  */
 
@@ -5491,13 +5530,13 @@ module.exports = stemmer;
 
 var visit;
 
-/**
+/*
  * Module dependencies.
  */
 
 visit = require('retext-visit');
 
-/**
+/*
  * Throw when not running in the browser (or a
  * simulated browser environment).
  */
@@ -5514,7 +5553,6 @@ if (typeof document !== 'object') {
  *
  * @param {Node} node - Insertion.
  */
-
 function oninsertinside(node) {
     node.parent.toDOMNode().insertBefore(node.toDOMNode(),
         node.prev ? node.prev.toDOMNode().nextSibling : null
@@ -5526,7 +5564,6 @@ function oninsertinside(node) {
  *
  * @param {Node} node - Deletion.
  */
-
 function onremoveinside(node, previousParent) {
     if (node.toDOMNode().parentNode === previousParent.toDOMNode()) {
         previousParent.toDOMNode().removeChild(node.toDOMNode());
@@ -5539,7 +5576,6 @@ function onremoveinside(node, previousParent) {
  *
  * @param {Node} node - Changed node.
  */
-
 function onchangetextinside(node, value) {
     if (node.toString() === value) {
         node.toDOMNode().textContent = value;
@@ -5557,7 +5593,6 @@ function onchangetextinside(node, value) {
  * @this {Node}
  * @return {Node} DOM node.
  */
-
 function toDOMNode() {
     var self,
         DOMNode;
@@ -5572,19 +5607,19 @@ function toDOMNode() {
             DOMNode = document.createElement(self.DOMTagName);
         }
 
-        /**
+        /*
          * Store DOM node on context.
          */
 
         self.DOMNode = DOMNode;
 
-        /**
+        /*
          * Store context on DOM node.
          */
 
         DOMNode.TextOMNode = self;
 
-        /**
+        /*
          * Fake change events.
          */
 
@@ -5603,7 +5638,6 @@ function toDOMNode() {
  *
  * @param {Node} tree - TextOM node.
  */
-
 function onrun(tree) {
     tree.on('insertinside', oninsertinside);
     tree.on('removeinside', onremoveinside);
@@ -5615,11 +5649,10 @@ function onrun(tree) {
  *
  * @param {Retext} retext - Instance of Retext.
  */
-
 function plugin(retext) {
     var TextOM;
 
-    /**
+    /*
      * Depend on `retext-visit`.
      */
 
@@ -5638,13 +5671,107 @@ function plugin(retext) {
     return onrun;
 }
 
-/**
+/*
  * Expose `plugin`.
  */
 
 module.exports = plugin;
 
-}, {"retext-visit":5}],
+}, {"retext-visit":35}],
+35: [function(require, module, exports) {
+'use strict';
+
+/**
+ * Invoke `callback` for every descendant of the
+ * operated on context.
+ *
+ * @param {string?} type - Node type to search for.
+ *   Stops visiting when the return value is `false`.
+ * @param {function(Node): boolean?} callback - Visitor.
+ *   Stops visiting when the return value is `false`.
+ * @this {Node} - Context to search in.
+ */
+function visit(type, callback) {
+    var node,
+        next;
+
+    node = this.head;
+
+    if (!callback) {
+        callback = type;
+        type = null;
+    }
+
+    while (node) {
+        /*
+         * Allow for removal of the node by `callback`.
+         */
+
+        next = node.next;
+
+        if (!type || node.type === type) {
+            if (callback(node) === false) {
+                return;
+            }
+        }
+
+        /*
+         * If possible, invoke the node's own `visit`
+         *  method, otherwise call retext-visit's
+         * `visit` method.
+         */
+
+        (node.visit || visit).call(node, type, callback);
+
+        node = next;
+    }
+}
+
+/**
+ * Invoke `callback` for every descendant with a given
+ * `type` in the operated on context.
+ *
+ * @deprecated
+ */
+function visitType() {
+    throw new Error(
+        'visitType(type, callback) is deprecated.\n' +
+        'Use `visit(type, callback)` instead.'
+    )
+}
+
+/**
+ * Define `plugin`.
+ *
+ * @param {Retext} retext
+ */
+function plugin(retext) {
+    var TextOM,
+        parentPrototype,
+        elementPrototype;
+
+    TextOM = retext.TextOM;
+    parentPrototype = TextOM.Parent.prototype;
+    elementPrototype = TextOM.Element.prototype;
+
+    /*
+     * Expose `visit` and `visitType` on Parents.
+     *
+     * Due to multiple inheritance of Elements (Parent
+     * and Child), these methods are explicitly added.
+     */
+
+    elementPrototype.visit = parentPrototype.visit = visit;
+    elementPrototype.visitType = parentPrototype.visitType = visitType;
+}
+
+/*
+ * Expose `plugin`.
+ */
+
+exports = module.exports = plugin;
+
+}, {}],
 5: [function(require, module, exports) {
 'use strict';
 
