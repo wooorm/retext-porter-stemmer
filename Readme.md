@@ -5,23 +5,26 @@
 ## Installation
 
 npm:
-```sh
+
+```bash
 $ npm install retext-porter-stemmer
 ```
 
 Component:
-```sh
+
+```bash
 $ component install wooorm/retext-porter-stemmer
 ```
 
 Bower:
-```sh
+
+```bash
 $ bower install retext-porter-stemmer
 ```
 
 ## Usage
 
-```js
+```javascript
 var Retext = require('retext');
 var visit = require('retext-visit');
 var inspect = require('retext-inspect');
@@ -58,7 +61,7 @@ None, **retext-porter-stemmer** automatically detects the stem of each [`WordNod
 
 On a MacBook Air, **retext** performs about 11% slower with **retext-porter-stemmer**.
 
-```
+```text
            retext w/o retext-porter-stemmer
   221 op/s » A paragraph (5 sentences, 100 words)
    24 op/s » A section (10 paragraphs, 50 sentences, 1,000 words)
