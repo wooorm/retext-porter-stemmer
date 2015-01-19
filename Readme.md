@@ -83,4 +83,4 @@ On a MacBook Air, **retext** performs about 11% slower with **retext-porter-stem
 
 ## License
 
-MIT © [Titus Wormer](http://wooorm.com)
+[MIT](LICENSE) © [Titus Wormer](http://wooorm.com)
