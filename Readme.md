@@ -22,6 +22,12 @@ $ component install wooorm/retext-porter-stemmer
 $ bower install retext-porter-stemmer
 ```
 
+[Duo](http://duojs.org/#getting-started):
+
+```javascript
+var porterStemmer = require('wooorm/retext-porter-stemmer');
+```
+
 ## Usage
 
 ```javascript
