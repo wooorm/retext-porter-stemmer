@@ -3,14 +3,14 @@
 var Retext,
     porterStemmer;
 
-/**
+/*
  * Dependencies.
  */
 
 Retext = require('retext');
 porterStemmer = require('./');
 
-/**
+/*
  * Dependencies.
  */
 
@@ -20,7 +20,7 @@ var retext,
 retext = new Retext();
 retextWithPorterStemmer = new Retext().use(porterStemmer);
 
-/**
+/*
  * Test data: A (big?) article (w/ 100 paragraphs, 500
  * sentences, 10,000 words);
  *

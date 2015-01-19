@@ -1,6 +1,6 @@
 'use strict';
 
-/**
+/*
  * Dependencies.
  */
 
@@ -18,7 +18,7 @@ content = require('retext-content');
 visit = require('retext-visit');
 assert = require('assert');
 
-/**
+/*
  * Retext.
  */
 
@@ -30,7 +30,7 @@ retext = new Retext()
     .use(content)
     .use(stemmer);
 
-/**
+/*
  * Fixtures.
  */
 
@@ -40,7 +40,7 @@ var otherWords,
 otherWords = ['An', 'easy', 'normal', 'paragraph'];
 otherStems = ['an', 'easi', 'normal', 'paragraph'];
 
-/**
+/*
  * Tests.
  */
 
