@@ -1,6 +1,6 @@
 {
   "name": "retext-porter-stemmer",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "description": "Retext implementation of the Porter Stemmer",
   "license": "MIT",
   "keywords": [
