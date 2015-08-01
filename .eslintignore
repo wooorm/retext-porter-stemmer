@@ -1,0 +1,6 @@
+build/
+components/
+coverage/
+build.js
+retext-porter-stemmer.js
+retext-porter-stemmer.min.js

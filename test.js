@@ -1,88 +1,38 @@
 'use strict';
 
+/* eslint-env mocha */
+
 /*
  * Dependencies.
  */
 
-var Retext,
-    stemmer,
-    inspect,
-    content,
-    visit,
-    assert;
-
-Retext = require('retext');
-stemmer = require('./');
-inspect = require('retext-inspect');
-content = require('retext-content');
-visit = require('retext-visit');
-assert = require('assert');
-
-/*
- * Retext.
- */
-
-var retext;
-
-retext = new Retext()
-    .use(inspect)
-    .use(visit)
-    .use(content)
-    .use(stemmer);
+var assert = require('assert');
+var retext = require('retext');
+var visit = require('unist-util-visit');
+var stemmer = require('./');
 
 /*
  * Fixtures.
  */
 
-var otherWords,
-    otherStems;
-
-otherWords = ['An', 'easy', 'normal', 'paragraph'];
-otherStems = ['an', 'easi', 'normal', 'paragraph'];
+var sentence = 'A simple, English, sentence';
+var stems = ['a', 'simpl', 'english', 'sentenc'];
 
 /*
  * Tests.
  */
 
-describe('porterStemmer()', function () {
-    it('should be a `function`', function () {
-        assert(typeof stemmer === 'function');
-    });
+describe('stemmer()', function () {
+    retext().use(stemmer).process(sentence, function (err, file) {
+        it('should work', function (done) {
+            var index = -1;
 
-    retext.parse('A simple, english, sentence', function (err, tree) {
-        it('should not throw', function (done) {
+            visit(file.namespace('retext').cst, 'WordNode', function (node) {
+                assert('stem' in node.data);
+                assert.equal(node.data.stem, stems[++index]);
+            });
+
             done(err);
         });
-
-        it('should `stem` each `WordNode`', function () {
-            tree.visit(tree.WORD_NODE, function (wordNode) {
-                assert('stem' in wordNode.data);
-            });
-        });
-
-        it('should set each stem to `null` when a WordNode (no longer?) ' +
-            'has a value', function () {
-                tree.visit(tree.WORD_NODE, function (wordNode) {
-                    wordNode.removeContent();
-
-                    assert(wordNode.data.stem === null);
-                });
-            }
-        );
-
-        it('should automatically re-stem `WordNode`s when their values ' +
-            'change',
-            function () {
-                var index;
-
-                index = -1;
-
-                tree.visit(tree.WORD_NODE, function (wordNode) {
-                    wordNode.replaceContent(otherWords[++index]);
-
-                    assert(wordNode.data.stem === otherStems[index]);
-                });
-            }
-        );
     });
 });

@@ -1,37 +1,54 @@
+/**
+ * @author Titus Wormer
+ * @copyright 2014-2015 Titus Wormer
+ * @license MIT
+ * @module retext:porter-stemmer
+ * @fileoverview Retext implementation of the Porter stemming algorithm.
+ */
+
 'use strict';
 
-var stemmer;
-
 /*
- * Module dependencies.
+ * Dependencies.
  */
 
-stemmer = require('stemmer');
+var stemmer = require('stemmer');
+var visit = require('unist-util-visit');
+var nlcstToString = require('nlcst-to-string');
 
 /**
- * `changetextinside` handler;
+ * Patch a `stem` property on `node` (a word-node).
  *
- * @this Node
+ * @param {NLCSTWordNode} node - Node.
  */
-function onchangeinside() {
-    var value;
+function patch(node) {
+    var data = node.data || {};
 
-    value = this.toString();
+    data.stem = stemmer(nlcstToString(node));
 
-    this.data.stem = value ? stemmer(value) : null;
+    node.data = data;
 }
 
 /**
- * Define `porterStemmer`.
+ * Transformer.
  *
- * @param {Retext} retext - Instance of Retext.
+ * @param {NLCSTNode} cst - Syntax tree.
  */
-function porterStemmer(retext) {
-    retext.TextOM.WordNode.on('changeinside', onchangeinside);
+function transformer(cst) {
+    visit(cst, 'WordNode', patch);
+}
+
+/**
+ * Attacher.
+ *
+ * @return {Function} - `transformer`.
+ */
+function attacher() {
+    return transformer;
 }
 
 /*
- * Expose `porterStemmer`.
+ * Expose.
  */
 
-module.exports = porterStemmer;
+module.exports = attacher;
